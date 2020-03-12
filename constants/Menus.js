@@ -1,22 +1,23 @@
-export const MENUS = [
-         {
-           id: 1,
-           title: 'people',
-           imgPath: require('../assets/images/people.svg'),
-         },
-         {
-           id: 2,
-           title: 'planets',
-           imgPath: require('../assets/images/planets.svg'),
-         },
-         {
-           id: 3,
-           title: 'starships',
-           imgPath: require('../assets/images/starships.svg'),
-         },
-         {
-           id: 4,
-           title: 'films',
-           imgPath: require('../assets/images/films.svg'),
-         },
-       ];
+const myObj = {
+  people: 'https://swapi.co/api/people/',
+  planets: 'https://swapi.co/api/planets/',
+  films: 'https://swapi.co/api/films/',
+  species: 'https://swapi.co/api/species/',
+  vehicles: 'https://swapi.co/api/vehicles/',
+  starships: 'https://swapi.co/api/starships/',
+};
+
+let menus = [];
+let id = 1;
+for (const prop in myObj) {
+  const item = {
+    id: `${id}`,
+    title: prop,
+    imgPath: require(`../assets/images/${prop}.svg`),
+    url: myObj[prop],
+  };
+  id++;
+  menus.push(item);
+}
+
+export default menus;

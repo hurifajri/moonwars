@@ -1,8 +1,21 @@
 import * as React from 'react';
 import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { MENUS } from '../constants/Menus';
+import MENUS from '../constants/Menus';
+import { BASE_URL, SCHEMA } from '../constants/Api';
 
 export default function HomeScreen() {
+  React.useEffect(() => {
+    const menuButtons = document.querySelectorAll('.menu-button');
+    menuButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const title = this.dataset.title;
+        fetch(`${BASE_URL}${title}/?${SCHEMA}`)
+          .then(response => response.json())
+          .then(response => console.log(response));
+      });
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -23,6 +36,9 @@ const Item = ({ title, imgPath }) => {
     <View style={styles.menuContainer}>
       <Image source={imgPath} style={styles.menuImage} />
       <Text style={styles.menuText}>{title}</Text>
+      <button id="menu-button" className="menu-button" data-title={title}>
+        {title}
+      </button>
     </View>
   );
 };
