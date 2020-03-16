@@ -5,7 +5,7 @@ import Item from './CategoriesItem';
 
 export default function Categories() {
   const [categories, setCategories] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
 
   React.useEffect(() => {
     // Get raw categories
@@ -14,9 +14,10 @@ export default function Categories() {
         let response = await fetch(`${BASE_URL}?${SCHEMA}`);
         let responseJson = await response.json();
         transformCategories(responseJson);
-        setLoading(false);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoadingComplete(true);
       }
     })();
   }, []);
@@ -55,7 +56,7 @@ export default function Categories() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {loading ? (
+      {!isLoadingComplete ? (
         <ActivityIndicator />
       ) : (
         <FlatList
