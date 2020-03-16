@@ -3,7 +3,7 @@ import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet } from 'react-nat
 import { BASE_URL, SCHEMA } from '../constants/Api';
 import Item from './CategoriesItem';
 
-export default function Categories() {
+export default function Categories({ navigation }) {
   const [categories, setCategories] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
 
@@ -40,16 +40,10 @@ export default function Categories() {
     setCategories(transformedCategories);
   };
 
-  // Get categories by title
-  async function getCategoriesByTitle(title) {
-    try {
-      let response = await fetch(`${BASE_URL}${title}/?${SCHEMA}`);
-      let responseJson = await response.json();
-      console.log(responseJson);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // Navigate to category on press
+  const navigateToCategory = title => {
+    navigation.navigate('Category', { title });
+  };
 
   // Total number of columns for categories
   const numColumns = 2;
@@ -61,9 +55,7 @@ export default function Categories() {
       ) : (
         <FlatList
           data={categories} // Get data from categories state
-          renderItem={({ item }) => (
-            <Item title={item.title} imgPath={item.imgPath} onPressItem={getCategoriesByTitle} />
-          )}
+          renderItem={({ item }) => <Item title={item.title} imgPath={item.imgPath} onPressItem={navigateToCategory} />}
           keyExtractor={item => item.id}
           numColumns={numColumns}
         />
