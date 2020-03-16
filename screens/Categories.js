@@ -1,17 +1,24 @@
 import * as React from 'react';
-import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { BASE_URL, SCHEMA } from '../constants/Api';
 import Item from './CategoriesItem';
 
 export default function Categories() {
   const [categories, setCategories] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     // Get raw categories
-    fetch(`${BASE_URL}?${SCHEMA}`)
-      .then(response => response.json())
-      .then(responseJson => transformCategories(responseJson))
-      .catch(error => console.error(error));
+    (async function getCategories() {
+      try {
+        let response = await fetch(`${BASE_URL}?${SCHEMA}`);
+        let responseJson = await response.json();
+        transformCategories(responseJson);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
   }, []);
 
   // Transform raw categories into formatted categories
@@ -48,12 +55,18 @@ export default function Categories() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={categories} // Get data from categories state
-        renderItem={({ item }) => <Item title={item.title} imgPath={item.imgPath} onPressItem={getCategoriesByTitle} />}
-        keyExtractor={item => item.id}
-        numColumns={numColumns}
-      />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={categories} // Get data from categories state
+          renderItem={({ item }) => (
+            <Item title={item.title} imgPath={item.imgPath} onPressItem={getCategoriesByTitle} />
+          )}
+          keyExtractor={item => item.id}
+          numColumns={numColumns}
+        />
+      )}
     </SafeAreaView>
   );
 }
