@@ -19,7 +19,7 @@ export default function App(props) {
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
-    async function loadResourcesAndDataAsync() {
+    (async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
 
@@ -38,9 +38,7 @@ export default function App(props) {
         setLoadingComplete(true);
         SplashScreen.hide();
       }
-    }
-
-    loadResourcesAndDataAsync();
+    })();
   }, []);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
