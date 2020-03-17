@@ -1,7 +1,15 @@
 import * as React from 'react';
-import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { BASE_URL, SCHEMA } from '../constants/Api';
-import Item from './CategoriesItem';
 
 export default function Categories({ navigation }) {
   const [categories, setCategories] = React.useState([]);
@@ -65,6 +73,16 @@ export default function Categories({ navigation }) {
   );
 }
 
+// Item component rendered by FlatList
+const Item = ({ title, imgPath, onPressItem }) => (
+  <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(title)} data-title={title}>
+    <View style={styles.catWrapper}>
+      <Image source={imgPath} style={styles.catImage} />
+      <Text style={styles.catText}>{title}</Text>
+    </View>
+  </TouchableOpacity>
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -73,5 +91,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     backgroundColor: '#130f40',
+  },
+  catContainer: {
+    flex: 1,
+    margin: 10,
+  },
+  catWrapper: {
+    borderColor: '#d6d7da',
+    padding: 15,
+    backgroundColor: '#fff',
+  },
+  catImage: {
+    alignSelf: 'center',
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
+  },
+  catText: {
+    fontSize: 20,
+    color: 'rgba(96,100,109, 1)',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
 });

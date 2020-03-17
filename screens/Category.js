@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BASE_URL, SCHEMA } from '../constants/Api';
-import Item from './CategoryItem';
 
 export default function Category({ route }) {
   const [category, setCategory] = React.useState([]);
@@ -56,6 +55,15 @@ export default function Category({ route }) {
   );
 }
 
+// Item component rendered by FlatList
+const Item = ({ name }) => (
+  <TouchableOpacity style={styles.catContainer}>
+    <View style={styles.catWrapper}>
+      <Text style={styles.catText}>{name}</Text>
+    </View>
+  </TouchableOpacity>
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -64,5 +72,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     backgroundColor: '#130f40',
+  },
+  catContainer: {
+    flex: 1,
+    margin: 10,
+  },
+  catWrapper: {
+    flexDirection: 'row',
+    padding: 15,
+  },
+  catText: {
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
