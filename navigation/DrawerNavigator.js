@@ -20,12 +20,17 @@ export default function DrawerNavigator({ navigation, route }) {
 }
 
 const getHeaderTitle = route => {
+  // Get active route name from state
   const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
+
+  // Get active category from state
+  const title = route.state?.routes[route.state.index]?.params?.title ?? INITIAL_ROUTE_NAME;
+  const titleCapitalized = title.charAt(0).toUpperCase() + title.slice(1);
 
   switch (routeName) {
     case 'Home':
       return 'Moonwars';
     case 'Category':
-      return 'Category';
+      return titleCapitalized; // Set dynamic title by selected category
   }
 };
