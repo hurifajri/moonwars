@@ -30,7 +30,8 @@ export default function Categories({ navigation }) {
       const item = {
         id: `${id}`,
         title: prop,
-        imgPath: require(`../assets/images/${prop}.svg`),
+        //imgPath: require(`../assets/images/${title}.svg`),
+        imgPath: require('../assets/images/planets.svg'),
         url: categories[prop],
       };
       id++;
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
     backgroundColor: '#130f40',
   },
 });

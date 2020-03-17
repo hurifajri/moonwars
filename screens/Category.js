@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
 import { BASE_URL, SCHEMA } from '../constants/Api';
 import Item from './CategoryItem';
 
 export default function Category({ route }) {
   const [category, setCategory] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const { title } = route.params;
 
   React.useEffect(() => {
-    const { title } = route.params;
-
     // Get category by title
     (async function getCategoryByTitle() {
       try {
@@ -27,7 +26,10 @@ export default function Category({ route }) {
   }, []);
 
   // Total number of columns for category
-  const numColumns = 2;
+  const numColumns = 1;
+
+  // Computed key based on category is selected
+  const key = title === 'films' ? 'title' : 'name';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,8 +38,17 @@ export default function Category({ route }) {
       ) : (
         <FlatList
           data={category} // Get data from category state
-          renderItem={({ item }) => <Item name={item.name} />}
-          keyExtractor={item => item.name}
+          renderItem={({ item }) => <Item name={item[key]} />}
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 1,
+                width: '100%',
+                backgroundColor: '#fff',
+              }}
+            />
+          )}
+          keyExtractor={item => item[key]}
           numColumns={numColumns}
         />
       )}
@@ -51,6 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
     backgroundColor: '#130f40',
   },
 });
