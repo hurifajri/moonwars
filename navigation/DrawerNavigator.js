@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Categories from '../screens/Categories';
 import Category from '../screens/Category';
+import Detail from '../screens/Detail';
 
 const Drawer = createDrawerNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -15,6 +16,7 @@ export default function DrawerNavigator({ navigation, route }) {
     <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <Drawer.Screen name="Home" component={Categories} />
       <Drawer.Screen name="Category" component={Category} />
+      <Drawer.Screen name="Detail" component={Detail} />
     </Drawer.Navigator>
   );
 }
@@ -27,10 +29,16 @@ const getHeaderTitle = route => {
   const title = route.state?.routes[route.state.index]?.params?.title ?? INITIAL_ROUTE_NAME;
   const titleCapitalized = title.charAt(0).toUpperCase() + title.slice(1);
 
+  // Get active category detail from state
+  const name = route.state?.routes[route.state.index]?.params?.name ?? INITIAL_ROUTE_NAME;
+  const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+
   switch (routeName) {
     case 'Home':
       return 'Moonwars';
     case 'Category':
       return titleCapitalized; // Set dynamic title by selected category
+    case 'Detail':
+      return nameCapitalized; // Set dynamic name by selected category detail
   }
 };
