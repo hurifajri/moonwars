@@ -1,21 +1,20 @@
 import * as React from 'react';
 import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BASE_URL, SCHEMA } from '../constants/Api';
+import { SCHEMA } from '../constants/Api';
 
-export default function Category({ route }) {
+export default function Category({ navigation, route }) {
   const [category, setCategory] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const { title } = route.params;
+  const { title, url } = route.params;
 
   React.useEffect(() => {
     // Get category by title
     (async function getCategoryByTitle() {
       try {
-        let response = await fetch(`${BASE_URL}${title}/?${SCHEMA}`);
-        let responseJson = await response.json();
+        const response = await fetch(`${url}?${SCHEMA}`);
+        const responseJson = await response.json();
         const { results } = responseJson;
         setCategory(results);
-        console.log(results);
       } catch (error) {
         console.error(error);
       } finally {
@@ -24,10 +23,15 @@ export default function Category({ route }) {
     })();
   }, []);
 
+  // Navigate to detail page
+  const navigateToDetail = url => {
+    navigation.navigate('Detail', { url });
+  };
+
   // Total number of columns for category
   const numColumns = 1;
 
-  // Computed key based on category is selected
+  // Computed key based on category which is selected
   const key = title === 'films' ? 'title' : 'name';
 
   return (
@@ -37,16 +41,8 @@ export default function Category({ route }) {
       ) : (
         <FlatList
           data={category} // Get data from category state
-          renderItem={({ item }) => <Item name={item[key]} />}
-          ItemSeparatorComponent={() => (
-            <View
-              style={{
-                height: 1,
-                width: '100%',
-                backgroundColor: '#fff',
-              }}
-            />
-          )}
+          renderItem={({ item }) => <Item name={item[key]} url={item.url} onPressItem={navigateToDetail} />}
+          ItemSeparatorComponent={() => <ItemSeparator />}
           keyExtractor={item => item[key]}
           numColumns={numColumns}
         />
@@ -56,12 +52,23 @@ export default function Category({ route }) {
 }
 
 // Item component rendered by FlatList
-const Item = ({ name }) => (
-  <TouchableOpacity style={styles.catContainer}>
+const Item = ({ name, url, onPressItem }) => (
+  <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(url)}>
     <View style={styles.catWrapper}>
       <Text style={styles.catText}>{name}</Text>
     </View>
   </TouchableOpacity>
+);
+
+// Item separator component rendered by Flatlist
+const ItemSeparator = () => (
+  <View
+    style={{
+      height: 1,
+      width: '100%',
+      backgroundColor: '#fff',
+    }}
+  />
 );
 
 const styles = StyleSheet.create({

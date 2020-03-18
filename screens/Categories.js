@@ -19,8 +19,8 @@ export default function Categories({ navigation }) {
     // Get raw categories
     (async function getCategories() {
       try {
-        let response = await fetch(`${BASE_URL}?${SCHEMA}`);
-        let responseJson = await response.json();
+        const response = await fetch(`${BASE_URL}?${SCHEMA}`);
+        const responseJson = await response.json();
         transformCategories(responseJson);
       } catch (error) {
         console.error(error);
@@ -32,7 +32,7 @@ export default function Categories({ navigation }) {
 
   // Transform raw categories into formatted categories
   const transformCategories = categories => {
-    let transformedCategories = [];
+    const transformedCategories = [];
     let id = 1;
     for (const prop in categories) {
       const item = {
@@ -49,9 +49,9 @@ export default function Categories({ navigation }) {
     setCategories(transformedCategories);
   };
 
-  // Navigate to category on press
-  const navigateToCategory = title => {
-    navigation.navigate('Category', { title });
+  // Navigate to category page
+  const navigateToCategory = (title, url) => {
+    navigation.navigate('Category', { title, url });
   };
 
   // Total number of columns for categories
@@ -64,7 +64,9 @@ export default function Categories({ navigation }) {
       ) : (
         <FlatList
           data={categories} // Get data from categories state
-          renderItem={({ item }) => <Item title={item.title} imgPath={item.imgPath} onPressItem={navigateToCategory} />}
+          renderItem={({ item }) => (
+            <Item title={item.title} imgPath={item.imgPath} url={item.url} onPressItem={navigateToCategory} />
+          )}
           keyExtractor={item => item.id}
           numColumns={numColumns}
         />
@@ -74,8 +76,8 @@ export default function Categories({ navigation }) {
 }
 
 // Item component rendered by FlatList
-const Item = ({ title, imgPath, onPressItem }) => (
-  <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(title)} data-title={title}>
+const Item = ({ title, imgPath, url, onPressItem }) => (
+  <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(title, url)}>
     <View style={styles.catWrapper}>
       <Image source={imgPath} style={styles.catImage} />
       <Text style={styles.catText}>{title}</Text>

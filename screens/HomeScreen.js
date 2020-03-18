@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Categories from './Categories';
 
-export default function HomeScreen({ navigation }) {
-  return <Categories navigation={navigation} />;
-}
+const HomeScreen = ({ navigation }) => <Categories navigation={navigation} />;
+
+export default HomeScreen;
