@@ -5,7 +5,16 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import DrawerNavigator from './navigation/DrawerNavigator';
+
+// Import screens
+import HomeScreen from './screens/Home';
+import CategoryScreen from './screens/Category';
+import PeopleScreen from './screens/People';
+import PlanetsScreen from './screens/Planets';
+import FilmsScreen from './screens/Films';
+import SpeciesScreen from './screens/Species';
+import VehiclesScreen from './screens/Vehicles';
+import StarshipsScreen from './screens/Starships';
 
 const Stack = createStackNavigator();
 
@@ -43,7 +52,14 @@ export default function App(props) {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Root" component={DrawerNavigator} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Moonwars' }} />
+            <Stack.Screen name="Category" component={CategoryScreen} />
+            <Stack.Screen name="People" component={PeopleScreen} />
+            <Stack.Screen name="Planets" component={PlanetsScreen} />
+            <Stack.Screen name="Films" component={FilmsScreen} />
+            <Stack.Screen name="Species" component={SpeciesScreen} />
+            <Stack.Screen name="Vehicles" component={VehiclesScreen} />
+            <Stack.Screen name="Starships" component={StarshipsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
@@ -54,6 +70,5 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
 });
