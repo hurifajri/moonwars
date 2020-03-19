@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     borderColor: secondaryColor,
     margin: 7,
     padding: 10,
+    height: 209,
   },
   moreContainer: {
     flexDirection: 'row',
@@ -57,8 +58,6 @@ const styles = StyleSheet.create({
   // Part of more container
   moreContainerLeft: {
     flex: 1,
-    alignSelf: 'flex-start',
-    alignSelf: 'stretch',
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: secondaryColor,
@@ -67,8 +66,6 @@ const styles = StyleSheet.create({
   },
   moreContainerRight: {
     flex: 1,
-    alignSelf: 'flex-start',
-    alignSelf: 'stretch',
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: secondaryColor,
