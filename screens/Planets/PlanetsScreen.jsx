@@ -48,7 +48,7 @@ export default function PlanetsScreen({ navigation, route }) {
 
   // Navigate to other page
   const navigateToPeople = (name, url) => {
-    navigation.push(`Films`, {
+    navigation.push(`People`, {
       name,
       url,
     });
