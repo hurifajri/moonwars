@@ -24,13 +24,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   moreContainer: {
+    flexDirection: 'row',
     alignSelf: 'flex-start',
     alignSelf: 'stretch',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: secondaryColor,
     margin: 7,
-    padding: 10,
   },
   moreContainerFlex: {
     flex: 1,
@@ -55,6 +52,27 @@ const styles = StyleSheet.create({
   },
   detailAttrValue: {
     flex: 2,
+  },
+
+  // Part of more container
+  moreContainerLeft: {
+    flex: 1,
+    alignSelf: 'flex-start',
+    alignSelf: 'stretch',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: secondaryColor,
+    marginRight: 7,
+    padding: 10,
+  },
+  moreContainerRight: {
+    flex: 1,
+    alignSelf: 'flex-start',
+    alignSelf: 'stretch',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: secondaryColor,
+    padding: 10,
   },
 
   // Text stylesheets

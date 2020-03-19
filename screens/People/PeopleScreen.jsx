@@ -127,39 +127,41 @@ export default function PeopleScreen({ navigation, route }) {
               </View>
               {/* END detail container */}
 
-              {/* START more container species */}
               <View style={styles.moreContainer}>
-                {/* more container title */}
-                <Text style={styles.bigText}>Species</Text>
-                <View style={styles.line} />
+                {/* START more container species */}
+                <View style={styles.moreContainerLeft}>
+                  {/* more container title */}
+                  <Text style={styles.bigText}>Species</Text>
+                  <View style={styles.line} />
 
-                {/* more container data */}
-                <ScrollView>
-                  {relatedSpecies.map(item => (
-                    <Text key={item.name} style={styles.smallText}>
-                      {item.name}
-                    </Text>
-                  ))}
-                </ScrollView>
+                  {/* more container data */}
+                  <ScrollView>
+                    {relatedSpecies.map(item => (
+                      <Text key={item.name} style={styles.smallText}>
+                        {item.name}
+                      </Text>
+                    ))}
+                  </ScrollView>
+                </View>
+                {/* END more container species */}
+
+                {/* START more container planets */}
+                <View style={styles.moreContainerRight}>
+                  {/* more container title */}
+                  <Text style={styles.bigText}>Planets</Text>
+                  <View style={styles.line} />
+
+                  {/* more container data */}
+                  <ScrollView>
+                    {relatedPlanets.map(item => (
+                      <Text key={item.name} style={styles.smallText}>
+                        {item.name}
+                      </Text>
+                    ))}
+                  </ScrollView>
+                </View>
+                {/* END more container planets */}
               </View>
-              {/* END more container species */}
-
-              {/* START more container planets */}
-              <View style={styles.moreContainer}>
-                {/* more container title */}
-                <Text style={styles.bigText}>Planets</Text>
-                <View style={styles.line} />
-
-                {/* more container data */}
-                <ScrollView>
-                  {relatedPlanets.map(item => (
-                    <Text key={item.name} style={styles.smallText}>
-                      {item.name}
-                    </Text>
-                  ))}
-                </ScrollView>
-              </View>
-              {/* END more container planets */}
 
               {/* START more container films */}
               <View style={styles.moreContainerFlex}>
