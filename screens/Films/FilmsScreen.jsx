@@ -5,7 +5,7 @@ import styles from './styles';
 
 export default function FilmsScreen({ navigation, route }) {
   const [detail, setDetail] = React.useState([]);
-  const [relatedData, setRelatedData] = React.useState([]);
+  const [relatedPeople, setRelatedPeople] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const { name, url } = route.params;
 
@@ -24,7 +24,7 @@ export default function FilmsScreen({ navigation, route }) {
         const responseJson = await response.json();
         const data = [responseJson];
         setDetail(data);
-        fetchRelatedData(data[0].characters);
+        fetchRelatedPeople(data[0].characters);
       } catch (error) {
         console.error(error);
       } finally {
@@ -33,8 +33,8 @@ export default function FilmsScreen({ navigation, route }) {
     })();
   }, []);
 
-  // Fetch related data of selected detail
-  const fetchRelatedData = urls => {
+  // Fetch related people of selected detail
+  const fetchRelatedPeople = urls => {
     // map every url to promise of fetch
     let requests = urls.map(url =>
       fetch(url)
@@ -43,11 +43,11 @@ export default function FilmsScreen({ navigation, route }) {
     );
 
     // Wait until all jobs are resolved
-    Promise.all(requests).then(responses => setRelatedData(responses));
+    Promise.all(requests).then(responses => setRelatedPeople(responses));
   };
 
   // Navigate to other page
-  const navigateToPage = (name, url) => {
+  const navigateToPeople = (name, url) => {
     navigation.push(`People`, {
       name,
       url,
@@ -109,8 +109,12 @@ export default function FilmsScreen({ navigation, route }) {
 
                 {/* more container data */}
                 <ScrollView>
-                  {relatedData.map(item => (
-                    <Text key={item.name} onPress={() => navigateToPage(item.name, item.url)} style={styles.smallText}>
+                  {relatedPeople.map(item => (
+                    <Text
+                      key={item.name}
+                      onPress={() => navigateToPeople(item.name, item.url)}
+                      style={styles.smallText}
+                    >
                       {item.name}
                     </Text>
                   ))}
