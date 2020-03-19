@@ -1,12 +1,20 @@
 import * as React from 'react';
 import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SCHEMA } from '../constants/Api';
+import { SCHEMA } from '../../constants/Api';
+import styles from './styles';
 
-export default function Detail({ navigation, route }) {
+export default function PeopleScreen({ navigation, route }) {
   const [detail, setDetail] = React.useState([]);
   const [relatedData, setRelatedData] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const { url } = route.params;
+  const { name, url } = route.params;
+
+  // Set title for each selected category
+  const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+
+  navigation.setOptions({
+    headerTitle: nameCapitalized,
+  });
 
   React.useEffect(() => {
     // Get detail by name
@@ -64,29 +72,3 @@ export default function Detail({ navigation, route }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#130f40',
-  },
-  detailContainer: {
-    flex: 1,
-    margin: 10,
-  },
-  detail: {
-    flex: 1,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#fff',
-    width: '100%',
-  },
-  detailText: {
-    fontSize: 20,
-    color: '#fff',
-    textAlign: 'left',
-    fontWeight: 'bold',
-  },
-});

@@ -1,17 +1,9 @@
 import * as React from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { BASE_URL, SCHEMA } from '../constants/Api';
+import { ActivityIndicator, FlatList, Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { BASE_URL, SCHEMA } from '../../constants/Api';
+import styles from './styles';
 
-export default function Categories({ navigation }) {
+export default function HomeScreen({ navigation }) {
   const [categories, setCategories] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
 
@@ -39,7 +31,7 @@ export default function Categories({ navigation }) {
         id: `${id}`,
         title: prop,
         //imgPath: require(`../assets/images/${title}.svg`),
-        imgPath: require('../assets/images/planets.svg'),
+        imgPath: require('../../assets/images/planets.svg'),
         url: categories[prop],
       };
       id++;
@@ -84,36 +76,3 @@ const Item = ({ title, imgPath, url, onPressItem }) => (
     </View>
   </TouchableOpacity>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    backgroundColor: '#130f40',
-  },
-  catContainer: {
-    flex: 1,
-    margin: 10,
-  },
-  catWrapper: {
-    borderColor: '#d6d7da',
-    padding: 15,
-    backgroundColor: '#fff',
-  },
-  catImage: {
-    alignSelf: 'center',
-    width: 80,
-    height: 80,
-    resizeMode: 'contain',
-  },
-  catText: {
-    fontSize: 20,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-  },
-});

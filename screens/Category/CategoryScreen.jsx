@@ -1,11 +1,19 @@
 import * as React from 'react';
 import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SCHEMA } from '../constants/Api';
+import { SCHEMA } from '../../constants/Api';
+import styles from './styles';
 
-export default function Category({ navigation, route }) {
+export default function CategoryScreen({ navigation, route }) {
   const [category, setCategory] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const { title, url } = route.params;
+
+  // Set title for each selected category
+  const titleCapitalized = title.charAt(0).toUpperCase() + title.slice(1);
+
+  navigation.setOptions({
+    headerTitle: titleCapitalized,
+  });
 
   React.useEffect(() => {
     // Get category by title
@@ -24,8 +32,11 @@ export default function Category({ navigation, route }) {
   }, []);
 
   // Navigate to detail page
-  const navigateToDetail = url => {
-    navigation.navigate('Detail', { url });
+  const navigateToDetail = (name, url) => {
+    navigation.navigate(`${titleCapitalized}`, {
+      name,
+      url,
+    });
   };
 
   // Total number of columns for category
@@ -53,7 +64,7 @@ export default function Category({ navigation, route }) {
 
 // Item component rendered by FlatList
 const Item = ({ name, url, onPressItem }) => (
-  <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(url)}>
+  <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(name, url)}>
     <View style={styles.catWrapper}>
       <Text style={styles.catText}>{name}</Text>
     </View>
@@ -70,28 +81,3 @@ const ItemSeparator = () => (
     }}
   />
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    backgroundColor: '#130f40',
-  },
-  catContainer: {
-    flex: 1,
-    margin: 10,
-  },
-  catWrapper: {
-    flexDirection: 'row',
-    padding: 15,
-  },
-  catText: {
-    fontSize: 20,
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-});
