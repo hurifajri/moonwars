@@ -4,26 +4,26 @@ import { SCHEMA } from '../../constants/Api';
 import styles from './styles';
 
 export default function FilmsScreen({ navigation, route }) {
-  const [detail, setDetail] = React.useState([]);
+  const [films, setFilms] = React.useState([]);
   const [relatedPeople, setRelatedPeople] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const { name, url } = route.params;
+  const { title, url } = route.params;
 
-  // Set title for each selected category
-  const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+  // Set name for selected category
+  const titleCapitalized = title.charAt(0).toUpperCase() + title.slice(1);
 
   navigation.setOptions({
-    headerTitle: nameCapitalized,
+    headerTitle: titleCapitalized,
   });
 
   React.useEffect(() => {
-    // Get detail by name
-    (async function getDetailByName() {
+    // Get films by selected category
+    (async function() {
       try {
         const response = await fetch(`${url}?${SCHEMA}`);
         const responseJson = await response.json();
         const data = [responseJson];
-        setDetail(data);
+        setFilms(data);
         fetchRelatedPeople(data[0].characters);
       } catch (error) {
         console.error(error);
@@ -33,7 +33,7 @@ export default function FilmsScreen({ navigation, route }) {
     })();
   }, []);
 
-  // Fetch related people of selected detail
+  // Fetch related people of selected films
   const fetchRelatedPeople = urls => {
     // map every url to promise of fetch
     let requests = urls.map(url =>
@@ -46,7 +46,7 @@ export default function FilmsScreen({ navigation, route }) {
     Promise.all(requests).then(responses => setRelatedPeople(responses));
   };
 
-  // Navigate to other page
+  // Navigate to people page
   const navigateToPeople = (name, url) => {
     navigation.push(`People`, {
       name,
@@ -54,31 +54,28 @@ export default function FilmsScreen({ navigation, route }) {
     });
   };
 
-  // Computed key based on category which is selected
-  const key = url.includes('films') ? 'title' : 'name';
-
   return (
     <SafeAreaView style={styles.container}>
       {!isLoadingComplete ? (
         <ActivityIndicator />
       ) : (
         <React.Fragment>
-          {detail.map(item => (
-            <React.Fragment key={key}>
-              {/* START detail container */}
+          {films.map(item => (
+            <React.Fragment key={item.title}>
+              {/* START films container */}
               <View style={styles.detailContainer}>
-                {/* detail container title */}
-                <Text style={styles.bigText}>{item[key]}</Text>
+                {/* films container title */}
+                <Text style={styles.bigText}>{item.title}</Text>
                 <View style={styles.line} />
 
-                {/* START detail attribute container */}
+                {/* START films attribute container */}
                 <View style={styles.detailAttrContainer}>
-                  {/* START detail attribute top container */}
+                  {/* START films attribute top container */}
                   <ScrollView style={styles.detailAttrTop}>
                     <Text style={styles.smallText}>{item.opening_crawl}</Text>
                   </ScrollView>
-                  {/* END detail attribute top container */}
-                  {/* START detail attribute bottom container */}
+                  {/* END films attribute top container */}
+                  {/* START films attribute bottom container */}
                   <View style={styles.detailAttrBottom}>
                     <View style={styles.detailAttrLabel}>
                       {/* Attribute labels */}
@@ -95,11 +92,11 @@ export default function FilmsScreen({ navigation, route }) {
                       <Text style={styles.smallText}>: {item.producer}</Text>
                     </View>
                   </View>
-                  {/* END detail attribute bottom container */}
+                  {/* END films attribute bottom container */}
                 </View>
-                {/* END detail attribute container */}
+                {/* END films attribute container */}
               </View>
-              {/* END detail container */}
+              {/* END films container */}
 
               {/* START more container */}
               <View style={styles.moreContainer}>

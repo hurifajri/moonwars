@@ -4,14 +4,14 @@ import { SCHEMA } from '../../constants/Api';
 import styles from './styles';
 
 export default function PeopleScreen({ navigation, route }) {
-  const [detail, setDetail] = React.useState([]);
+  const [people, setPeople] = React.useState([]);
   const [relatedSpecies, setRelatedSpecies] = React.useState([]);
   const [relatedPlanets, setRelatedPlanets] = React.useState([]);
   const [relatedFilms, setRelatedFilms] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const { name, url } = route.params;
 
-  // Set title for each selected category
+  // Set name for selected category
   const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
 
   navigation.setOptions({
@@ -19,13 +19,13 @@ export default function PeopleScreen({ navigation, route }) {
   });
 
   React.useEffect(() => {
-    // Get detail by name
-    (async function getDetailByName() {
+    // Get people by selected category
+    (async function() {
       try {
         const response = await fetch(`${url}?${SCHEMA}`);
         const responseJson = await response.json();
         const data = [responseJson];
-        setDetail(data);
+        setPeople(data);
         fetchRelatedSpecies(data[0].species);
         fetchRelatedPlanets(data[0].homeworld);
         fetchRelatedFilms(data[0].films);
@@ -37,7 +37,7 @@ export default function PeopleScreen({ navigation, route }) {
     })();
   }, []);
 
-  // Fetch related species of selected detail
+  // Fetch related species of selected people
   const fetchRelatedSpecies = urls => {
     // map every url to promise of fetch
     let requests = urls.map(url =>
@@ -50,7 +50,7 @@ export default function PeopleScreen({ navigation, route }) {
     Promise.all(requests).then(responses => setRelatedSpecies(responses));
   };
 
-  // Fetch related planets of selected detail
+  // Fetch related planets of selected people
   const fetchRelatedPlanets = async url => {
     try {
       const response = await fetch(`${url}?${SCHEMA}`);
@@ -62,7 +62,7 @@ export default function PeopleScreen({ navigation, route }) {
     }
   };
 
-  // Fetch related films of selected detail
+  // Fetch related films of selected people
   const fetchRelatedFilms = urls => {
     // map every url to promise of fetch
     let requests = urls.map(url =>
@@ -75,16 +75,13 @@ export default function PeopleScreen({ navigation, route }) {
     Promise.all(requests).then(responses => setRelatedFilms(responses));
   };
 
-  // Navigate to other page
-  const navigateToFilms = (name, url) => {
+  // Navigate to films page
+  const navigateToFilms = (title, url) => {
     navigation.push(`Films`, {
-      name,
+      title,
       url,
     });
   };
-
-  // Computed key based on category which is selected
-  const key = url.includes('films') ? 'title' : 'name';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,15 +89,15 @@ export default function PeopleScreen({ navigation, route }) {
         <ActivityIndicator />
       ) : (
         <React.Fragment>
-          {detail.map(item => (
-            <React.Fragment key={key}>
-              {/* START detail container */}
+          {people.map(item => (
+            <React.Fragment key={item.name}>
+              {/* START people container */}
               <View style={styles.detailContainer}>
-                {/* detail container title */}
-                <Text style={styles.bigText}>{item[key]}</Text>
+                {/* people container title */}
+                <Text style={styles.bigText}>{item.name}</Text>
                 <View style={styles.line} />
 
-                {/* START detail attribute container */}
+                {/* START people attribute container */}
                 <View style={styles.detailAttrContainer}>
                   <View style={styles.detailAttrLabel}>
                     {/* Attribute labels */}
@@ -123,9 +120,9 @@ export default function PeopleScreen({ navigation, route }) {
                     <Text style={styles.smallText}>: {item.eye_color}</Text>
                   </View>
                 </View>
-                {/* END detail attribute container */}
+                {/* END people attribute container */}
               </View>
-              {/* END detail container */}
+              {/* END people container */}
 
               <View style={styles.moreContainer}>
                 {/* START more container species */}

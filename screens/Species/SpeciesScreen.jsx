@@ -4,13 +4,13 @@ import { SCHEMA } from '../../constants/Api';
 import styles from './styles';
 
 export default function SpeciesScreen({ navigation, route }) {
-  const [detail, setDetail] = React.useState([]);
+  const [species, setSpecies] = React.useState([]);
   const [relatedPlanets, setRelatedPlanets] = React.useState([]);
   const [relatedPeople, setRelatedPeople] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const { name, url } = route.params;
 
-  // Set title for each selected category
+  // Set name for selected category
   const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
 
   navigation.setOptions({
@@ -18,13 +18,13 @@ export default function SpeciesScreen({ navigation, route }) {
   });
 
   React.useEffect(() => {
-    // Get detail by name
-    (async function getDetailByName() {
+    // Get species by selected category
+    (async function() {
       try {
         const response = await fetch(`${url}?${SCHEMA}`);
         const responseJson = await response.json();
         const data = [responseJson];
-        setDetail(data);
+        setSpecies(data);
         fetchRelatedPlanets(data[0].homeworld);
         fetchRelatedPeople(data[0].people);
       } catch (error) {
@@ -35,7 +35,7 @@ export default function SpeciesScreen({ navigation, route }) {
     })();
   }, []);
 
-  // Fetch related planets of selected detail
+  // Fetch related planets of selected species
   const fetchRelatedPlanets = async url => {
     try {
       const response = await fetch(`${url}?${SCHEMA}`);
@@ -47,7 +47,7 @@ export default function SpeciesScreen({ navigation, route }) {
     }
   };
 
-  // Fetch related people of selected detail
+  // Fetch related people of selected species
   const fetchRelatedPeople = urls => {
     // map every url to promise of fetch
     let requests = urls.map(url =>
@@ -60,7 +60,7 @@ export default function SpeciesScreen({ navigation, route }) {
     Promise.all(requests).then(responses => setRelatedPeople(responses));
   };
 
-  // Navigate to other page
+  // Navigate to people page
   const navigateToPeople = (name, url) => {
     navigation.push(`People`, {
       name,
@@ -68,24 +68,21 @@ export default function SpeciesScreen({ navigation, route }) {
     });
   };
 
-  // Computed key based on category which is selected
-  const key = url.includes('films') ? 'title' : 'name';
-
   return (
     <SafeAreaView style={styles.container}>
       {!isLoadingComplete ? (
         <ActivityIndicator />
       ) : (
         <React.Fragment>
-          {detail.map(item => (
-            <React.Fragment key={key}>
-              {/* START detail container */}
+          {species.map(item => (
+            <React.Fragment key={item.name}>
+              {/* START species container */}
               <View style={styles.detailContainer}>
-                {/* detail container title */}
-                <Text style={styles.bigText}>{item[key]}</Text>
+                {/* species container title */}
+                <Text style={styles.bigText}>{item.name}</Text>
                 <View style={styles.line} />
 
-                {/* START detail attribute container */}
+                {/* START species attribute container */}
                 <View style={styles.detailAttrContainer}>
                   <View style={styles.detailAttrLabel}>
                     {/* Attribute labels */}
@@ -110,9 +107,9 @@ export default function SpeciesScreen({ navigation, route }) {
                     <Text style={styles.smallText}>: {item.language}</Text>
                   </View>
                 </View>
-                {/* END detail attribute container */}
+                {/* END species attribute container */}
               </View>
-              {/* END detail container */}
+              {/* END species container */}
 
               {/* START more container planets */}
               <View style={styles.moreContainer}>
