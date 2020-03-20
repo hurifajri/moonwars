@@ -4,12 +4,12 @@ import { SCHEMA } from '../../constants/Api';
 import styles from './styles';
 
 export default function PlanetsScreen({ navigation, route }) {
-  const [detail, setDetail] = React.useState([]);
+  const [planets, setPlanets] = React.useState([]);
   const [relatedPeople, setRelatedPeople] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const { name, url } = route.params;
 
-  // Set title for each selected category
+  // Set name for selected category
   const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
 
   navigation.setOptions({
@@ -17,13 +17,13 @@ export default function PlanetsScreen({ navigation, route }) {
   });
 
   React.useEffect(() => {
-    // Get detail by name
-    (async function getDetailByName() {
+    // Get planets by selected category
+    (async function() {
       try {
         const response = await fetch(`${url}?${SCHEMA}`);
         const responseJson = await response.json();
         const data = [responseJson];
-        setDetail(data);
+        setPlanets(data);
         fetchRelatedPeople(data[0].residents);
       } catch (error) {
         console.error(error);
@@ -33,7 +33,7 @@ export default function PlanetsScreen({ navigation, route }) {
     })();
   }, []);
 
-  // Fetch related data of selected detail
+  // Fetch related data of selected planets
   const fetchRelatedPeople = urls => {
     // map every url to promise of fetch
     let requests = urls.map(url =>
@@ -46,7 +46,7 @@ export default function PlanetsScreen({ navigation, route }) {
     Promise.all(requests).then(responses => setRelatedPeople(responses));
   };
 
-  // Navigate to other page
+  // Navigate to people page
   const navigateToPeople = (name, url) => {
     navigation.push(`People`, {
       name,
@@ -54,24 +54,21 @@ export default function PlanetsScreen({ navigation, route }) {
     });
   };
 
-  // Computed key based on category which is selected
-  const key = url.includes('films') ? 'title' : 'name';
-
   return (
     <SafeAreaView style={styles.container}>
       {!isLoadingComplete ? (
         <ActivityIndicator />
       ) : (
         <React.Fragment>
-          {detail.map(item => (
-            <React.Fragment key={key}>
-              {/* START detail container */}
+          {planets.map(item => (
+            <React.Fragment key={item.name}>
+              {/* START planets container */}
               <View style={styles.detailContainer}>
-                {/* detail container title */}
-                <Text style={styles.bigText}>{item[key]}</Text>
+                {/* planets container title */}
+                <Text style={styles.bigText}>{item.name}</Text>
                 <View style={styles.line} />
 
-                {/* START detail attribute container */}
+                {/* START planets attribute container */}
                 <View style={styles.detailAttrContainer}>
                   <View style={styles.detailAttrLabel}>
                     {/* Attribute labels */}
@@ -96,9 +93,9 @@ export default function PlanetsScreen({ navigation, route }) {
                     <Text style={styles.smallText}>: {item.terrain}</Text>
                   </View>
                 </View>
-                {/* END detail attribute container */}
+                {/* END planets attribute container */}
               </View>
-              {/* END detail container */}
+              {/* END planets container */}
 
               {/* START more container */}
               <View style={styles.moreContainer}>

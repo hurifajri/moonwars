@@ -29,8 +29,8 @@ export default function HomeScreen({ navigation }) {
     for (const prop in categories) {
       const item = {
         id: `${id}`,
-        title: prop,
-        //imgPath: require(`../assets/images/${title}.svg`),
+        name: prop,
+        //imgPath: require(`../assets/images/${name}.svg`),
         imgPath: require('../../assets/images/planets.svg'),
         url: categories[prop],
       };
@@ -42,8 +42,9 @@ export default function HomeScreen({ navigation }) {
   };
 
   // Navigate to category page
-  const navigateToCategory = (title, url) => {
-    navigation.navigate('Category', { title, url });
+  const navigateToCategory = (name, url) => {
+    const categoryList = `${name.charAt(0).toUpperCase()}${name.slice(1)}List`;
+    navigation.navigate(categoryList, { name, url });
   };
 
   // Total number of columns for categories
@@ -57,7 +58,7 @@ export default function HomeScreen({ navigation }) {
         <FlatList
           data={categories} // Get data from categories state
           renderItem={({ item }) => (
-            <Item title={item.title} imgPath={item.imgPath} url={item.url} onPressItem={navigateToCategory} />
+            <Item name={item.name} imgPath={item.imgPath} url={item.url} onPressItem={navigateToCategory} />
           )}
           keyExtractor={item => item.id}
           numColumns={numColumns}
@@ -68,11 +69,11 @@ export default function HomeScreen({ navigation }) {
 }
 
 // Item component rendered by FlatList
-const Item = ({ title, imgPath, url, onPressItem }) => (
-  <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(title, url)}>
+const Item = ({ name, imgPath, url, onPressItem }) => (
+  <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(name, url)}>
     <View style={styles.catWrapper}>
       <Image source={imgPath} style={styles.catImage} />
-      <Text style={styles.catText}>{title}</Text>
+      <Text style={styles.catText}>{name}</Text>
     </View>
   </TouchableOpacity>
 );

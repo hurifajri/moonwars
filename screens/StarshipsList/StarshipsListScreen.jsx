@@ -3,26 +3,26 @@ import { ActivityIndicator, FlatList, SafeAreaView, Text, TouchableOpacity, View
 import { SCHEMA } from '../../constants/Api';
 import styles from './styles';
 
-export default function CategoryScreen({ navigation, route }) {
-  const [category, setCategory] = React.useState([]);
+export default function StarshipsListScreen({ navigation, route }) {
+  const [starshipsList, setStarshipsList] = React.useState([]);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const { title, url } = route.params;
+  const { name, url } = route.params;
 
-  // Set title for each selected category
-  const titleCapitalized = title.charAt(0).toUpperCase() + title.slice(1);
+  // Set name for selected category
+  const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
 
   navigation.setOptions({
-    headerTitle: titleCapitalized,
+    headerTitle: nameCapitalized,
   });
 
   React.useEffect(() => {
-    // Get category by title
-    (async function getCategoryByTitle() {
+    // Get starships list by selected category
+    (async function() {
       try {
         const response = await fetch(`${url}?${SCHEMA}`);
         const responseJson = await response.json();
         const { results } = responseJson;
-        setCategory(results);
+        setStarshipsList(results);
       } catch (error) {
         console.error(error);
       } finally {
@@ -31,19 +31,16 @@ export default function CategoryScreen({ navigation, route }) {
     })();
   }, []);
 
-  // Navigate to detail page
-  const navigateToDetail = (name, url) => {
-    navigation.navigate(`${titleCapitalized}`, {
+  // Navigate to starships page
+  const navigateToStarships = (name, url) => {
+    navigation.navigate(`${nameCapitalized}`, {
       name,
       url,
     });
   };
 
-  // Total number of columns for category
+  // Total number of columns for starships list
   const numColumns = 1;
-
-  // Computed key based on category which is selected
-  const key = title === 'films' ? 'title' : 'name';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,10 +48,10 @@ export default function CategoryScreen({ navigation, route }) {
         <ActivityIndicator />
       ) : (
         <FlatList
-          data={category} // Get data from category state
-          renderItem={({ item }) => <Item name={item[key]} url={item.url} onPressItem={navigateToDetail} />}
+          data={starshipsList} // Get data from starships list state
+          renderItem={({ item }) => <Item name={item.name} url={item.url} onPressItem={navigateToStarships} />}
           ItemSeparatorComponent={() => <ItemSeparator />}
-          keyExtractor={item => item[key]}
+          keyExtractor={item => item.name}
           numColumns={numColumns}
         />
       )}
