@@ -20,6 +20,9 @@ export default function HomeScreen({ navigation }) {
         setLoadingComplete(true);
       }
     })();
+
+    // Set options for header navigation
+    navigation.setOptions({ title: 'Moonwars' });
   }, []);
 
   // Transform raw categories into formatted categories
@@ -27,11 +30,22 @@ export default function HomeScreen({ navigation }) {
     const transformedCategories = [];
     let id = 1;
     for (const prop in categories) {
+      const imgPath =
+        prop === 'people'
+          ? require('../../assets/images/people.png')
+          : prop === 'planets'
+          ? require('../../assets/images/planets.png')
+          : prop === 'films'
+          ? require('../../assets/images/films.png')
+          : prop === 'species'
+          ? require('../../assets/images/species.png')
+          : prop === 'vehicles'
+          ? require('../../assets/images/vehicles.png')
+          : require('../../assets/images/starships.png');
       const item = {
         id: `${id}`,
         name: prop,
-        //imgPath: require(`../assets/images/${name}.svg`),
-        imgPath: require('../../assets/images/planets.svg'),
+        imgPath,
         url: categories[prop],
       };
       id++;
@@ -39,6 +53,7 @@ export default function HomeScreen({ navigation }) {
     }
     // Set categories state with transformed categories
     setCategories(transformedCategories);
+    console.log(transformedCategories);
   };
 
   // Navigate to category page
