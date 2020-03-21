@@ -5,7 +5,6 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 
 // Import screens
 import HomeScreen from './screens/Home';
@@ -23,7 +22,6 @@ import StarshipsScreen from './screens/Starships';
 import StarshipsListScreen from './screens/StarshipsList';
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -33,9 +31,6 @@ export default function App(props) {
     (async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
-
-        // Load initial navigation state
-        // setInitialNavigationState(await getInitialState());
 
         // Load fonts
         await Font.loadAsync({
@@ -59,7 +54,7 @@ export default function App(props) {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Moonwars' }} />
+            <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="People" component={PeopleScreen} />
             <Stack.Screen name="PeopleList" component={PeopleListScreen} />
             <Stack.Screen name="Planets" component={PlanetsScreen} />
