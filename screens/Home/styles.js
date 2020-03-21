@@ -10,11 +10,8 @@ const styles = StyleSheet.create({
   },
   catContainer: {
     flex: 1,
-    margin: 10,
-  },
-  catWrapper: {
-    borderColor: '#d6d7da',
-    padding: 15,
+    margin: 7,
+    padding: 10,
     backgroundColor: '#fff',
   },
   catImage: {
@@ -25,7 +22,7 @@ const styles = StyleSheet.create({
   },
   catText: {
     fontSize: 20,
-    color: 'rgba(96,100,109, 1)',
+    color: '#000',
     textAlign: 'center',
     fontWeight: 'bold',
     textTransform: 'uppercase',

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActivityIndicator, FlatList, Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import { BASE_URL, SCHEMA } from '../../constants/Api';
 import styles from './styles';
 
@@ -86,9 +86,7 @@ export default function HomeScreen({ navigation }) {
 // Item component rendered by FlatList
 const Item = ({ name, imgPath, url, onPressItem }) => (
   <TouchableOpacity style={styles.catContainer} onPress={() => onPressItem(name, url)}>
-    <View style={styles.catWrapper}>
-      <Image source={imgPath} style={styles.catImage} />
-      <Text style={styles.catText}>{name}</Text>
-    </View>
+    <Image source={imgPath} style={styles.catImage} />
+    <Text style={styles.catText}>{name}</Text>
   </TouchableOpacity>
 );
